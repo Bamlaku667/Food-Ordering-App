@@ -85,8 +85,10 @@ const AddFood = async (req: Request, res: Response) => {
         const vandor = await findVandor({ _id: user._id });
 
         if (vandor) {
+            const files  =  req.files as [Express.Multer.File]
+            const images = files.map((file: Express.Multer.File) => file.filename);
             const createFood = await Food.create({
-                VandorId: vandor._id, images: ['image1.jpg'], name, description, category, foodType, readyTime, price
+                VandorId: vandor._id, images: images, name, description, category, foodType, readyTime, price
             })
             vandor.foods.push(createFood);
             const result = await vandor.save()
@@ -100,9 +102,9 @@ const AddFood = async (req: Request, res: Response) => {
 const GetFoods = async (req: Request, res: Response) => {
     const user = req.user;
     if (user) {
-        const foods = Food.findOne({ VandorId: user._id })
+        const foods = await Food.find({ VandorId: user._id })
         if (foods) {
-            return res.json(foods);
+            return res.json({foods});
         }
     }
     return res.json({ msg: 'No food found for this user' });

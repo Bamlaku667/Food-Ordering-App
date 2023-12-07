@@ -2,6 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser'
 import { AdminRoutes } from './routes/';
 import { VandorRoutes } from './routes/';
+import path from 'path'
 import mongoose from 'mongoose';
 import { dbURI } from './config';
 const app = express();
@@ -10,6 +11,7 @@ app.get('/', (req, res) => {
     res.send('hello expres')
 })
 
+app.use('/images', express.static(path.join(__dirname, 'images')))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use('/api/v1/admin', AdminRoutes)
