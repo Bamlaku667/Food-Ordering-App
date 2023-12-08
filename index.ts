@@ -1,30 +1,15 @@
-import express from 'express';
-import bodyParser from 'body-parser'
-import { AdminRoutes } from './routes/';
-import { VandorRoutes } from './routes/';
-import path from 'path'
-import mongoose from 'mongoose';
-import { dbURI } from './config';
-const app = express();
+import express from "express";
+import dbConnection from "./services/DataBase"
+import App from "./services/ExpressApp"
 
-app.get('/', (req, res) => {
-    res.send('hello expres')
-})
+const startServer = async () => {
+    const app = express();
+    await dbConnection();
+    await App(app);
 
-app.use('/images', express.static(path.join(__dirname, 'images')))
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use('/api/v1/admin', AdminRoutes)
-app.use('/api/v1/Vandor', VandorRoutes);
-
-mongoose.connect(dbURI).then(() => {
-    console.log('CONNECTING TO DB..')
     app.listen(3000, () => {
-        console.log(`server is running on port 3000`)
+        console.log('server is listening on port 3000');
     })
+}
 
-}).catch(err => {
-    throw err;
-});
-
-
+startServer();

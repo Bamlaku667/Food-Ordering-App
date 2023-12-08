@@ -43,7 +43,6 @@ const GetVandorProfile = async (req: Request, res: Response, next: NextFunction)
 const UpdateVandorProfile = async (req: Request, res: Response, next: NextFunction) => {
     const { name, address, phone, foodTypes } = req.body as VandorUpdateInputs;
     const user = req.user;
-    console.log(user)
     if (user) {
         const vandor = await findVandor({ _id: user._id })
         if (vandor) {
@@ -53,7 +52,6 @@ const UpdateVandorProfile = async (req: Request, res: Response, next: NextFuncti
             vandor.foodTypes = foodTypes
         }
         await vandor?.save();
-        console.log(vandor)
         return res.json(vandor);
     }
     res.json({ msg: 'No user profile found' })
@@ -78,14 +76,12 @@ const updateVendorCoverImages = async (req: Request, res: Response, next: NextFu
 const UpdateVandorService = async (req: Request, res: Response, next: NextFunction) => {
 
     const user = req.user;
-    console.log(user)
     if (user) {
         const existingUser = await findVandor({ _id: user._id })
         if (existingUser) {
             existingUser.serviceAvailable = !existingUser.serviceAvailable;
         }
         await existingUser?.save();
-        console.log(existingUser)
         return res.json(existingUser);
     }
     res.json({ msg: 'No user profile found' })
