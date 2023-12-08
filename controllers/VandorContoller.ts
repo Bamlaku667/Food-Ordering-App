@@ -35,7 +35,6 @@ const GetVandorProfile = async (req: Request, res: Response, next: NextFunction)
     const user = req.user;
     if (user) {
         const existingUser = await findVandor({ _id: user._id });
-        console.log(existingUser);
         return res.json(existingUser);
     }
     res.json({ msg: 'No user profile found' })

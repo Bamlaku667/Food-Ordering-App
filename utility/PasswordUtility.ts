@@ -32,14 +32,13 @@ const ValidateSignature = async (req: Request) => {
         const token = authHeader.split(' ')[1];
         try {
             const payload = jwt.verify(token, TOKEN_KEY) as SignaturePayload;
-            req.user = payload;
-            return true;
+            return payload
         }
         catch (err) {
-            return false
+            throw new Error('Not Authorized')
         }
     }
-    return false
+    throw new Error('No token')
 }
 
 

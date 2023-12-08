@@ -9,14 +9,16 @@ declare global {
         }
     }
 }
+
 const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
-    const isValid = await ValidateSignature(req);
-    if (isValid) {
-        next();
+    try {
+        const payload = await ValidateSignature(req) as SignaturePayload;
+        req.user = payload;
+        next()
+    } catch (error) {
+        return res.json({msg: (error as Error).message})
     }
-    else {
-        return res.json({ msg: 'Not authorized' });
-    }
+
 }
 
 export { verifyToken as auth };
