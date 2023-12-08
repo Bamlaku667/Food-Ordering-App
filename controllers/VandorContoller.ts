@@ -84,7 +84,7 @@ const AddFood = async (req: Request, res: Response) => {
         const vandor = await findVandor({ _id: user._id });
 
         if (vandor) {
-            const files  =  req.files as [Express.Multer.File]
+            const files  =  req.files as Express.Multer.File[]
             const images = files.map((file: Express.Multer.File) => file.filename);
             const createFood = await Food.create({
                 VandorId: vandor._id, images: images, name, description, category, foodType, readyTime, price
