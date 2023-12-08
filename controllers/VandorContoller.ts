@@ -34,8 +34,8 @@ const VandorLogin = async (req: Request, res: Response, next: NextFunction) => {
 const GetVandorProfile = async (req: Request, res: Response, next: NextFunction) => {
     const user = req.user;
     if (user) {
-        const existingUser = await findVandor({ _id: user._id });
-        return res.json(existingUser);
+        const vandor = await findVandor({ _id: user._id });
+        return res.json(vandor);
     }
     res.json({ msg: 'No user profile found' })
 }
@@ -45,21 +45,35 @@ const UpdateVandorProfile = async (req: Request, res: Response, next: NextFuncti
     const user = req.user;
     console.log(user)
     if (user) {
-        const existingUser = await findVandor({ _id: user._id })
-        if (existingUser) {
-            existingUser.name = name;
-            existingUser.address = address;
-            existingUser.phone = phone;
-            existingUser.foodTypes = foodTypes
+        const vandor = await findVandor({ _id: user._id })
+        if (vandor) {
+            vandor.name = name;
+            vandor.address = address;
+            vandor.phone = phone;
+            vandor.foodTypes = foodTypes
         }
-        await existingUser?.save();
-        console.log(existingUser)
-        return res.json(existingUser);
+        await vandor?.save();
+        console.log(vandor)
+        return res.json(vandor);
     }
     res.json({ msg: 'No user profile found' })
 }
 
+const updateVendorCoverImages = async (req: Request, res: Response, next: NextFunction) => {
+    const user = req.user;
+    if (user) {
+        const vandor = await findVandor({ _id: user._id });
 
+        if (vandor) {
+            const files  =  req.files as Express.Multer.File[]
+            const images = files.map((file: Express.Multer.File) => file.filename);
+            vandor.coverImages.push(...images);
+            const result = await vandor.save()
+            return res.json(result);
+
+        }
+    }
+}
 
 const UpdateVandorService = async (req: Request, res: Response, next: NextFunction) => {
 
@@ -95,7 +109,7 @@ const AddFood = async (req: Request, res: Response) => {
 
         }
     }
-    res.json(user);
+    return res.json(user);
 }
 
 const GetFoods = async (req: Request, res: Response) => {
@@ -109,4 +123,4 @@ const GetFoods = async (req: Request, res: Response) => {
     return res.json({ msg: 'No food found for this user' });
 
 }
-export { VandorLogin, GetVandorProfile, UpdateVandorProfile, UpdateVandorService, AddFood, GetFoods };
+export { VandorLogin, GetVandorProfile, UpdateVandorProfile, UpdateVandorService, AddFood, GetFoods, updateVendorCoverImages };

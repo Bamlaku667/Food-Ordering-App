@@ -1,5 +1,5 @@
 import express from 'express';
-import { AddFood, GetFoods, GetVandorProfile, UpdateVandorProfile, UpdateVandorService, VandorLogin, } from '../controllers/VandorContoller';
+import { AddFood, GetFoods, GetVandorProfile, UpdateVandorProfile, UpdateVandorService, VandorLogin, updateVendorCoverImages, } from '../controllers/VandorContoller';
 import { auth } from '../middlewares/'
 import multer from 'multer'
 
@@ -20,6 +20,7 @@ router.use(auth);
 router.route('/profile').get(GetVandorProfile).patch(UpdateVandorProfile)
 router.route('/service').patch(UpdateVandorService);
 router.route('/food').post(images, AddFood)
+router.route('/coverImage').patch(images, updateVendorCoverImages)
 router.route('/foods').get(GetFoods)
 // router.get('/', (req: Request, res: Response, next: NextFunction) => {
 //     res.send('vandor routes');
