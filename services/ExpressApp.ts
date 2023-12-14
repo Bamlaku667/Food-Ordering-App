@@ -2,6 +2,7 @@ import express, { Application } from 'express';
 import bodyParser from 'body-parser'
 import { AdminRoutes } from '../routes/';
 import { VandorRoutes } from '../routes/';
+import { ShopingRoutes } from '../routes/ShopingRoutes';
 import path from 'path'
 export default async (app: Application) => {
     app.get('/', (req, res) => {
@@ -13,6 +14,7 @@ export default async (app: Application) => {
     app.use(bodyParser.urlencoded({ extended: true }))
     app.use('/api/v1/admin', AdminRoutes)
     app.use('/api/v1/Vandor', VandorRoutes);
+    app.use('/api/v1/', ShopingRoutes);
 
     return app
 }

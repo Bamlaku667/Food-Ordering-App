@@ -1,15 +1,13 @@
 import { NextFunction, Request, Response } from "express";
 import { CreateVandorInput } from "../dto";
 import { Vandor } from "../models/Vandor";
-import { AdminRoutes } from "../routes";
 import { GeneratePassword, GenerateSalt } from "../utility";
 
 const findVandor = async (condition: any) => {
-
     const vandor = await Vandor.findOne(condition);
     return vandor
-
 }
+
 const Createvandor = async (
     req: Request,
     res: Response,
@@ -50,9 +48,6 @@ const Createvandor = async (
         serviceAvailable: false,
         coverImages: []
     });
-
-
-
     res.json({ createVandor });
 };
 
