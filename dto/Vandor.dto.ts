@@ -20,6 +20,13 @@ interface VandorUpdateInputs {
     foodTypes: [string]
 }
 
+interface VandorPayload {
+    _id: string,
+    email: string,
+    name: string,
+    foodTypes: [string]
+}
 
 
-export { CreateVandorInput, VandorLoginInputs,  VandorUpdateInputs}
+
+export { CreateVandorInput, VandorLoginInputs,  VandorUpdateInputs, VandorPayload}

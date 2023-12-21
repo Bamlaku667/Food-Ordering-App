@@ -1,8 +1,8 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { SignaturePayload } from '../dto';
 import { TOKEN_EXPIRY, TOKEN_KEY } from '../config';
 import { Request, Response } from 'express';
+import { AuthPayload } from '../dto';
 
 const GenerateSalt = async () => {
     return await bcrypt.genSalt();
@@ -17,7 +17,7 @@ const ValidatePassword = async (hashedPassword: string, unHashedPassword: string
 
 }
 
-const GenerateSignature = async (payload: SignaturePayload) => {
+const GenerateSignature = async (payload: AuthPayload) => {
     try {
         const token = jwt.sign(payload, TOKEN_KEY, { expiresIn: TOKEN_EXPIRY })
         return token
@@ -31,7 +31,7 @@ const ValidateSignature = async (req: Request) => {
     if (authHeader) {
         const token = authHeader.split(' ')[1];
         try {
-            const payload = jwt.verify(token, TOKEN_KEY) as SignaturePayload;
+            const payload = jwt.verify(token, TOKEN_KEY) as AuthPayload;
             return payload
         }
         catch (err) {

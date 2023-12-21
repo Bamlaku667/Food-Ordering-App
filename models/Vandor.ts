@@ -14,7 +14,6 @@ interface VandorDoc extends Document {
     salt: string,
     rating: number,
     foods: any
-
 }
 
 const vandorSchema = new Schema({
